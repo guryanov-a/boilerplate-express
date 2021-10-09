@@ -1,5 +1,14 @@
-var express = require('express');
-var app = express();
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const app = express();
+
+app.use(
+  '/public', 
+  express.static(__dirname + '/public')
+);
+
+app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(
   function (req, res, next) {
@@ -7,11 +16,6 @@ app.use(
 
     next();
   }
-);
-
-app.use(
-  '/public', 
-  express.static(__dirname + '/public')
 );
 
 app.get('/', function(req, res) {
@@ -40,10 +44,16 @@ app.get('/:word/echo', function(req, res) {
   res.send({ echo: word });
 });
 
-app.get('/name', function(req, res) {
-  const { first, last } = req.query;
-  res.send({ name: `${first} ${last}`});
-});
+app
+  .route('/name')
+  .get(function(req, res) {
+    const { first, last } = req.query;
+    res.send({ name: `${first} ${last}`});
+  })
+  .post(function(req, res) {
+    const { first, last } = req.body;
+    res.send({ name: `${first} ${last}`});
+  });
 
 
 
