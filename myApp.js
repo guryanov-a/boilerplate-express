@@ -37,11 +37,13 @@ app.get('/now', function(req, res, next) {
 
 app.get('/:word/echo', function(req, res) {
   const { word } = req.params;
-  
   res.send({ echo: word });
 });
 
-
+app.get('/name', function(req, res) {
+  const { first, last } = req.query;
+  res.send({ name: `${first} ${last}`});
+});
 
 
 
